@@ -6,8 +6,8 @@ import java.util.Scanner;
 import java.util.UUID;
 
 public class Elenco {
-    private static ArrayList<FuncionarioBase> funcionarios = new ArrayList<>();
-    public static void adicionarFuncionario() {
+    private ArrayList<FuncionarioBase> funcionarios = new ArrayList<>();
+    public void adicionarFuncionario() {
         UUID id = UUID.randomUUID();
         Scanner scanner = new Scanner(System.in);
         System.out.println("\nArea de atuação: ");
@@ -101,7 +101,7 @@ public class Elenco {
 
         scanner.close();
     }
-    public static void contarSituacao(ArrayList<FuncionarioBase> funcionarios){
+    public void contarSituacao(){
         int ativos = 0;
         int demitidos = 0;
         for (FuncionarioBase f : funcionarios){
@@ -116,11 +116,10 @@ public class Elenco {
         System.out.println("Demitidos: "+demitidos);
     }
 
-    public static FuncionarioBase buscarPorId(ArrayList<FuncionarioBase> funcionarios
-            , UUID id)
+    public  FuncionarioBase buscarPorId(UUID id)
             throws Exception {
         for (FuncionarioBase f : funcionarios) {
-            if (f.getId() == id) {
+            if (f.getId().equals(id)) {
                 return f;
             }
         }
