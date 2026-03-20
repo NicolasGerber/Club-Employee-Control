@@ -1,6 +1,7 @@
 package club_employee_control.service;
 
 import club_employee_control.entity.ComissaoTecnica;
+import club_employee_control.exception.RecursoNaoEncontradoException;
 import club_employee_control.repository.ComissaoTecnicaRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -30,7 +31,7 @@ public class ComissaoTecnicaService {
 
     public ComissaoTecnica atualizar(UUID id, ComissaoTecnica dadosNovos) {
         ComissaoTecnica membro = comissaoTecnicaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Membro não encontrado: " + id));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Membro não encontrado: " + id));
 
         membro.setDuracaoContrato(dadosNovos.getDuracaoContrato());
 

@@ -17,11 +17,10 @@ public class Jogador extends FuncionarioBase {
 
     protected Jogador() {}
 
-    public Jogador(UUID id, String nome, LocalDate dataAdmissao,
+    public Jogador(String nome, LocalDate dataAdmissao,
                    String posicao, float salario,
                    int duracaoContrato, int numeroCamisa) {
-        super(id, nome, dataAdmissao, "Jogador - " + posicao,
-                salario, duracaoContrato);
+        super(nome, dataAdmissao, "Jogador - " + posicao, salario, duracaoContrato);
         this.numeroCamisa = numeroCamisa;
         this.liberadoPeloDM = false;
     }

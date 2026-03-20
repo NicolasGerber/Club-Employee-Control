@@ -1,5 +1,6 @@
 package club_employee_control.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.Period;
@@ -14,7 +15,9 @@ import java.util.UUID;
 public abstract class FuncionarioBase implements Funcionario {
 
     @Id
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id", nullable = false, updatable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     protected UUID id;
 
     @Column(name = "nome", nullable = false, length = 100)
@@ -41,9 +44,8 @@ public abstract class FuncionarioBase implements Funcionario {
     @Transient
     private ArrayList<Float> historicoSalario = new ArrayList<>();
     protected FuncionarioBase() {}
-    public FuncionarioBase(UUID id, String nome, LocalDate dataAdmissao,
+    public FuncionarioBase(String nome, LocalDate dataAdmissao,
                            String cargo, float salario, int duracaoContrato) {
-        this.id = id;
         this.nome = nome;
         this.dataAdmissao = dataAdmissao;
         this.cargo = cargo;

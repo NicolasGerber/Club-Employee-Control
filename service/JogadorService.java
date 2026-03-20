@@ -1,6 +1,7 @@
 package club_employee_control.service;
 
 import club_employee_control.entity.Jogador;
+import club_employee_control.exception.RecursoNaoEncontradoException;
 import club_employee_control.repository.JogadorRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -33,7 +34,7 @@ public class JogadorService {
     }
     public Jogador atualizar(UUID id, Jogador dadosNovos) {
         Jogador jogador = jogadorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Jogador não encontrado: " + id));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Jogador não encontrado: " + id));
 
         jogador.setDuracaoContrato(dadosNovos.getDuracaoContrato());
         jogador.setLiberadoPeloDM(dadosNovos.isLiberadoPeloDM());
