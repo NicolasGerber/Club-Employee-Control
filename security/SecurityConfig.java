@@ -26,11 +26,13 @@ public class SecurityConfig {
     private final JwtAuthFilter jwtAuthFilter;
     private final UsuarioService usuarioService;
     private final PasswordEncoder passwordEncoder;
+    private final RateLimitFilter rateLimitFilter;
 
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter, UsuarioService usuarioService, PasswordEncoder passwordEncoder) {
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter, UsuarioService usuarioService, PasswordEncoder passwordEncoder, RateLimitFilter rateLimitFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.usuarioService = usuarioService;
         this.passwordEncoder = passwordEncoder;
+        this.rateLimitFilter = rateLimitFilter;
     }
 
     @Bean
@@ -63,8 +65,9 @@ public class SecurityConfig {
                             );
                         })
                 )
-                .authenticationProvider(authenticationProvider(passwordEncoder))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(rateLimitFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter, RateLimitFilter.class)
+                .authenticationProvider(authenticationProvider(passwordEncoder));
 
         return http.build();
     }

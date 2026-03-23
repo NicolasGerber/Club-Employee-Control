@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.BadCredentialsException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -51,6 +52,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(new ErroResponse(409, "Este e-mail já está cadastrado"));
+    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErroResponse> handleBadCredentials(BadCredentialsException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ErroResponse(401, "Email ou senha invalidos"));
     }
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErroResponse> handleException(Exception ex) {
