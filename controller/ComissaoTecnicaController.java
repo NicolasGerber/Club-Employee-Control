@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/comissao")
@@ -31,13 +32,12 @@ public class ComissaoTecnicaController {
     }
 
     @PostMapping
-    public ResponseEntity<ComissaoTecnica> salvar(@RequestBody ComissaoTecnica membro) {
-        return ResponseEntity.ok(comissaoTecnicaService.salvar(membro));
+    public ResponseEntity<ComissaoTecnica> salvar(@Valid @RequestBody ComissaoTecnica comissaoTecnica) {
+        return ResponseEntity.ok(comissaoTecnicaService.salvar(comissaoTecnica));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ComissaoTecnica> atualizar(@PathVariable UUID id,
-                                                     @RequestBody ComissaoTecnica dadosNovos) {
+    public ResponseEntity<ComissaoTecnica> atualizar(@PathVariable UUID id, @Valid @RequestBody ComissaoTecnica dadosNovos) {
         return ResponseEntity.ok(comissaoTecnicaService.atualizar(id, dadosNovos));
     }
 

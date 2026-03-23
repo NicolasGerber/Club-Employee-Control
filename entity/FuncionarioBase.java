@@ -6,6 +6,11 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.UUID;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 
 @Entity
@@ -21,18 +26,25 @@ public abstract class FuncionarioBase implements Funcionario {
     protected UUID id;
 
     @Column(name = "nome", nullable = false, length = 100)
+    @NotBlank(message = "Nome é obrigatório")
+    @Size(max = 100, message = "Nome deve ter no máximo 100 caracteres")
     protected String nome;
 
     @Column(name = "data_admissao", nullable = false)
+    @NotNull(message = "Data de admissão é obrigatória")
     protected LocalDate dataAdmissao;
 
     @Column(name = "cargo", nullable = false, length = 100)
+    @NotBlank(message = "Cargo é obrigatório")
+    @Size(max = 100, message = "Cargo deve ter no máximo 100 caracteres")
     protected String cargo;
 
     @Column(name = "salario", nullable = false)
+    @Positive(message = "Salário deve ser positivo")
     protected float salario;
 
     @Column(name = "duracao_contrato", nullable = false)
+    @Min(value = 1, message = "Duração do contrato deve ser de pelo menos 1 mês")
     protected int duracaoContrato;
 
     @Column(name = "data_demissao")

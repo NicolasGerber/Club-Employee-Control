@@ -2,7 +2,8 @@ package club_employee_control.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.util.UUID;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "jogadores")
@@ -10,7 +11,9 @@ import java.util.UUID;
 public class Jogador extends FuncionarioBase {
 
     @Column(name = "numero_camisa", nullable = false)
+    @Min(value = 1, message = "Número da camisa deve ser pelo menos 1")
     private int numeroCamisa;
+
 
     @Column(name = "liberado_pelo_dm", nullable = false)
     private boolean liberadoPeloDM;
