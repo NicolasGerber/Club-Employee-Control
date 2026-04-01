@@ -6,6 +6,8 @@ import club_employee_control.entity.ComissaoTecnica;
 import club_employee_control.exception.RecursoNaoEncontradoException;
 import club_employee_control.repository.ComissaoTecnicaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -25,13 +27,12 @@ public class ComissaoTecnicaService {
     }
 
     public List<ComissaoTecnica> listarTodos() {
-        return comissaoTecnicaRepository.findAll();
+        return comissaoTecnicaRepository.findByAtivoTrue();
     }
-
     public Optional<ComissaoTecnica> buscarPorId(UUID id) {
         return comissaoTecnicaRepository.findById(id);
     }
-
+    @Transactional
     public ComissaoTecnica atualizar(UUID id, ComissaoTecnica dadosNovos) {
         ComissaoTecnica membro = comissaoTecnicaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Membro não encontrado: " + id));
@@ -43,25 +44,25 @@ public class ComissaoTecnicaService {
 
         return comissaoTecnicaRepository.save(membro);
     }
-
+    @Transactional
     public void deletar(UUID id) {
         comissaoTecnicaRepository.deleteById(id);
     }
-
+    @Transactional
     public ComissaoTecnica demitir(UUID id, DemissaoRequest request) {
         ComissaoTecnica membro = comissaoTecnicaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Membro não encontrado: " + id));
         membro.demitir(request.dataDemissao());
         return comissaoTecnicaRepository.save(membro);
     }
-
+    @Transactional
     public ComissaoTecnica aumentarSalario(UUID id, AjusteSalarioRequest request) {
         ComissaoTecnica membro = comissaoTecnicaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Membro não encontrado: " + id));
         membro.aumentarSalario(request.percentual());
         return comissaoTecnicaRepository.save(membro);
     }
-
+    @Transactional
     public ComissaoTecnica diminuirSalario(UUID id, AjusteSalarioRequest request) {
         ComissaoTecnica membro = comissaoTecnicaRepository.findById(id)
                 .orElseThrow(() -> new RecursoNaoEncontradoException("Membro não encontrado: " + id));

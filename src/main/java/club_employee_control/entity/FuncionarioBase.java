@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -55,14 +56,20 @@ public abstract class FuncionarioBase implements Funcionario {
     public void setDataAdmissao(LocalDate data)     { this.dataAdmissao = data; }
 
     @Column(name = "data_demissao")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     protected LocalDate dataDemissao;
 
     @Column(name = "ativo", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     protected boolean ativo;
+
 
     @Transient
     private ArrayList<BigDecimal> historicoSalario = new ArrayList<>();
-    protected FuncionarioBase() {}
+    protected FuncionarioBase() {
+        this.ativo = true;
+        this.dataDemissao = null;
+    }
     public FuncionarioBase(String nome, LocalDate dataAdmissao,
                            String cargo, BigDecimal salario, int duracaoContrato) {
         this.nome = nome;
