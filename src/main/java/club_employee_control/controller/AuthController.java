@@ -6,6 +6,7 @@ import club_employee_control.dto.RegistroRequest;
 import club_employee_control.entity.Usuario;
 import club_employee_control.service.JwtService;
 import club_employee_control.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,7 +44,7 @@ public class AuthController {
     }
 
     @PostMapping("/registrar")
-    public ResponseEntity<Void> registrar(@RequestBody RegistroRequest request) {
+    public ResponseEntity<Void> registrar(@Valid @RequestBody RegistroRequest request) {
         usuarioService.registrar(request);
         return ResponseEntity.status(201).build();
     }

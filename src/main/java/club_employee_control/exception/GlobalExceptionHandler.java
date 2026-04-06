@@ -1,6 +1,7 @@
 package club_employee_control.exception;
 
 import club_employee_control.dto.ErroResponse;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -70,5 +71,10 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErroResponse(400, ex.getMessage()));
+    }
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity<ErroResponse> handlePropertyReference(PropertyReferenceException ex) {
+        return ResponseEntity.badRequest()
+                .body(new ErroResponse(400, "Propriedade de ordenação inválida: " + ex.getPropertyName()));
     }
 }

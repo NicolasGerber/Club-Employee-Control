@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 
 @RestController
 @RequestMapping("/comissao")
@@ -22,8 +26,9 @@ public class ComissaoTecnicaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ComissaoTecnica>> listarTodos() {
-        return ResponseEntity.ok(comissaoTecnicaService.listarTodos());
+    public ResponseEntity<Page<ComissaoTecnica>> listarTodos(
+            @PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(comissaoTecnicaService.listarTodos(pageable));
     }
 
     @GetMapping("/{id}")

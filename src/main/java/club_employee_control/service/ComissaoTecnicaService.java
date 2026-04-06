@@ -7,7 +7,8 @@ import club_employee_control.exception.RecursoNaoEncontradoException;
 import club_employee_control.repository.ComissaoTecnicaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +27,8 @@ public class ComissaoTecnicaService {
         return comissaoTecnicaRepository.save(membro);
     }
 
-    public List<ComissaoTecnica> listarTodos() {
-        return comissaoTecnicaRepository.findByAtivoTrue();
+    public Page<ComissaoTecnica> listarTodos(Pageable pageable) {
+        return comissaoTecnicaRepository.findByAtivoTrue(pageable);
     }
     public Optional<ComissaoTecnica> buscarPorId(UUID id) {
         return comissaoTecnicaRepository.findById(id);

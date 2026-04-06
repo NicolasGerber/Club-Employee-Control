@@ -8,6 +8,10 @@ import club_employee_control.service.FuncionarioClubeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import java.util.UUID;
 import jakarta.validation.Valid;
 
@@ -22,8 +26,9 @@ public class FuncionarioClubeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FuncionarioClube>> listarTodos() {
-        return ResponseEntity.ok(funcionarioClubeService.listarTodos());
+    public ResponseEntity<Page<FuncionarioClube>> listarTodos(
+            @PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(funcionarioClubeService.listarTodos(pageable));
     }
 
     @GetMapping("/{id}")

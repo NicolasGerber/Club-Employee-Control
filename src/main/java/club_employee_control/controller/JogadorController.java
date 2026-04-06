@@ -10,6 +10,10 @@ import club_employee_control.dto.DemissaoRequest;
 import java.util.List;
 import java.util.UUID;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 
 @RestController
 @RequestMapping("/jogadores")
@@ -22,15 +26,9 @@ public class JogadorController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Jogador>> listarTodos() {
-        return ResponseEntity.ok(jogadorService.listarTodos());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Jogador> buscarPorId(@PathVariable UUID id) {
-        return jogadorService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Jogador não encontrado: " + id));
+    public ResponseEntity<Page<Jogador>> listarTodos(
+            @PageableDefault(size = 10) Pageable pageable) {
+        return ResponseEntity.ok(jogadorService.listarTodos(pageable));
     }
 
     @PostMapping

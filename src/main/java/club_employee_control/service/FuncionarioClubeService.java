@@ -7,7 +7,8 @@ import club_employee_control.exception.RecursoNaoEncontradoException;
 import club_employee_control.repository.FuncionarioClubeRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +27,8 @@ public class FuncionarioClubeService {
         return funcionarioClubeRepository.save(funcionario);
     }
 
-    public List<FuncionarioClube> listarTodos() {
-        return funcionarioClubeRepository.findByAtivoTrue();
+    public Page<FuncionarioClube> listarTodos(Pageable pageable) {
+        return funcionarioClubeRepository.findByAtivoTrue(pageable); // instância, não classe
     }
     public Optional<FuncionarioClube> buscarPorId(UUID id) {
         return funcionarioClubeRepository.findById(id);
