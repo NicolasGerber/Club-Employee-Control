@@ -16,7 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 
 @RestController
-@RequestMapping("/comissao")
+@RequestMapping("/comissao-tecnica")
 public class ComissaoTecnicaController {
 
     private final ComissaoTecnicaService comissaoTecnicaService;

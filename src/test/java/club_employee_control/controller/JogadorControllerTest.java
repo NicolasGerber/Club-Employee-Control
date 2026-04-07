@@ -5,7 +5,7 @@ import club_employee_control.entity.Role;
 import club_employee_control.entity.Usuario;
 import club_employee_control.repository.JogadorRepository;
 import club_employee_control.repository.UsuarioRepository;
-import club_employee_control.service.JwtService;                  // (1) pacote correto
+import club_employee_control.service.JwtService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
