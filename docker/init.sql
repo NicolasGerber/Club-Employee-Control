@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS funcionarios (
                                             id UUID PRIMARY KEY,
                                             nome VARCHAR(100) NOT NULL,
     cargo VARCHAR(100) NOT NULL,
-    salario FLOAT NOT NULL,
+    salario NUMERIC(15,2) NOT NULL,
     data_admissao DATE NOT NULL,
     data_demissao DATE,
     ativo BOOLEAN NOT NULL DEFAULT TRUE,

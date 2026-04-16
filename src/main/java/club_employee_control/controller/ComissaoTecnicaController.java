@@ -7,12 +7,10 @@ import club_employee_control.exception.RecursoNaoEncontradoException;
 import club_employee_control.service.ComissaoTecnicaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 import java.util.UUID;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 
 @RestController

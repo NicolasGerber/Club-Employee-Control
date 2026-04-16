@@ -60,12 +60,7 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ErroResponse(401, "Email ou senha invalidos"));
     }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErroResponse> handleException(Exception ex) {
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErroResponse(500, "Erro interno no servidor"));
-    }
+
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErroResponse> handleIllegalArgument(IllegalArgumentException ex) {
         return ResponseEntity
@@ -76,5 +71,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErroResponse> handlePropertyReference(PropertyReferenceException ex) {
         return ResponseEntity.badRequest()
                 .body(new ErroResponse(400, "Propriedade de ordenação inválida: " + ex.getPropertyName()));
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErroResponse> handleException(Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErroResponse(500, "Erro interno no servidor"));
     }
 }

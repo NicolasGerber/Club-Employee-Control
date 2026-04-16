@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "funcionarios")
+@Table(name = "comissao_tecnica")
 @DiscriminatorValue("COMISSAO")
 public class ComissaoTecnica extends FuncionarioBase {
 

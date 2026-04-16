@@ -2,18 +2,13 @@ package club_employee_control.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
 import java.util.UUID;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
-import java.math.BigDecimal;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 @Entity
 @Table(name = "funcionarios")
@@ -46,14 +41,9 @@ public abstract class FuncionarioBase implements Funcionario {
     @NotNull(message = "Salário é obrigatório")
     protected BigDecimal salario;
 
-
     @Column(name = "duracao_contrato", nullable = false)
     @Min(value = 1, message = "Duração do contrato deve ser de pelo menos 1 mês")
     protected int duracaoContrato;
-
-    public void setNome(String nome)                { this.nome = nome; }
-    public void setCargo(String cargo)              { this.cargo = cargo; }
-    public void setDataAdmissao(LocalDate data)     { this.dataAdmissao = data; }
 
     @Column(name = "data_demissao")
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
@@ -63,13 +53,11 @@ public abstract class FuncionarioBase implements Funcionario {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     protected boolean ativo;
 
-
-    @Transient
-    private ArrayList<BigDecimal> historicoSalario = new ArrayList<>();
     protected FuncionarioBase() {
         this.ativo = true;
         this.dataDemissao = null;
     }
+
     public FuncionarioBase(String nome, LocalDate dataAdmissao,
                            String cargo, BigDecimal salario, int duracaoContrato) {
         this.nome = nome;
@@ -80,63 +68,53 @@ public abstract class FuncionarioBase implements Funcionario {
         this.ativo = true;
         this.dataDemissao = null;
     }
-    public void tempoDeCasa(){
-        LocalDate dataAtual = LocalDate.now();
-        Period periodo = Period.between(this.dataAdmissao,dataAtual);
-        System.out.printf("%s está no clube há "+ periodo.getYears()+" anos e "+ periodo.getMonths()+" meses.",nome);
+
+    public String getTempoDeCasa() {
+        Period periodo = Period.between(this.dataAdmissao, LocalDate.now());
+        return nome + " está no clube há " + periodo.getYears() + " anos e " + periodo.getMonths() + " meses.";
     }
+
     public void demitir(LocalDate data) {
-        if (!ativo) {
-            System.out.println(nome + " já foi demitido.");
-            return;
-        }
+        if (!ativo) return;
         this.ativo = false;
         this.dataDemissao = data;
-        System.out.println(nome + " foi demitido em " + data);
     }
+
     public void aumentarSalario(BigDecimal percentual) {
-        historicoSalario.add(this.salario);
-        BigDecimal oldSalario = this.salario;
-        BigDecimal fator = percentual.divide(BigDecimal.valueOf(100));
-        this.salario = this.salario.add(this.salario.multiply(fator));
+        BigDecimal fator = percentual.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
+        this.salario = this.salario.add(this.salario.multiply(fator))
+                .setScale(2, RoundingMode.HALF_UP); // ✅ garante escala 2 na resposta
     }
+
     public void diminuirSalario(BigDecimal percentual) {
-        historicoSalario.add(this.salario);
-        BigDecimal oldSalario = this.salario;
-        BigDecimal fator = percentual.divide(BigDecimal.valueOf(100));
-        this.salario = this.salario.subtract(this.salario.multiply(fator));
+        BigDecimal fator = percentual.divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
+        this.salario = this.salario.subtract(this.salario.multiply(fator))
+                .setScale(2, RoundingMode.HALF_UP); // ✅ garante escala 2 na resposta
     }
-    public void exibirHistoricoSalario() {
-        System.out.println("\n=== Histórico de Salário - " + this.nome + " ===");
-        for (int i = 0; i < historicoSalario.size(); i++) {
-            System.out.println((i + 1) + "º R$" + historicoSalario.get(i));
-            if (i != historicoSalario.size() - 1) {
-                BigDecimal val1 = historicoSalario.get(i);
-                BigDecimal val2 = historicoSalario.get(i + 1);
-                BigDecimal result = val2.subtract(val1)
-                        .divide(val1, 4, java.math.RoundingMode.HALF_UP)
-                        .multiply(BigDecimal.valueOf(100));
-                String sinal = result.compareTo(BigDecimal.ZERO) > 0 ? "📈 +" : "📉 ";
-                System.out.println(sinal + result.setScale(2, java.math.RoundingMode.HALF_UP) + "%");
-            }
-        }
-    }
+
     @Override
     public String toString() {
-        return "\nID: "         + id +
-                "\nNome: "       + nome +
-                "\nCargo: "      + cargo +
-                "\nSalário: R$"  + salario +
-                "\nAdmissão: "   + dataAdmissao +
-                "\nContrato: "   + duracaoContrato + " meses" +
-                "\nStatus: "     + (ativo ? "Ativo"
-                : "Demitido em " + dataDemissao);
+        return "\nID: "        + id +
+                "\nNome: "      + nome +
+                "\nCargo: "     + cargo +
+                "\nSalário: R$" + salario +
+                "\nAdmissão: "  + dataAdmissao +
+                "\nContrato: "  + duracaoContrato + " meses" +
+                "\nStatus: "    + (ativo ? "Ativo" : "Demitido em " + dataDemissao);
     }
-    @Override public UUID getId()                    { return id; }
+
+    // Setters
+    public void setNome(String nome)                { this.nome = nome; }
+    public void setCargo(String cargo)              { this.cargo = cargo; }
+    public void setDataAdmissao(LocalDate data)     { this.dataAdmissao = data; }
+
+    // Getters
+    @Override public UUID getId()                   { return id; }
     @Override public String getNome()               { return nome; }
     @Override public LocalDate getDataAdmissao()    { return dataAdmissao; }
     @Override public String getCargo()              { return cargo; }
-    @Override public BigDecimal getSalario() { return salario; }    @Override public int getDuracaoContrato()       { return duracaoContrato; }
+    @Override public BigDecimal getSalario()        { return salario; }
+    @Override public int getDuracaoContrato()       { return duracaoContrato; }
     @Override public void setDuracaoContrato(int m) { this.duracaoContrato = m; }
     @Override public LocalDate getDataDemissao()    { return dataDemissao; }
     @Override public boolean isAtivo()              { return ativo; }

@@ -7,12 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import club_employee_control.dto.AjusteSalarioRequest;
 import club_employee_control.dto.DemissaoRequest;
-import java.util.List;
 import java.util.UUID;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 
 @RestController
@@ -30,7 +28,12 @@ public class JogadorController {
             @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.ok(jogadorService.listarTodos(pageable));
     }
-
+    @GetMapping("/{id}")
+    public ResponseEntity<Jogador> buscarPorId(@PathVariable UUID id) {
+        return jogadorService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Membro não encontrado: " + id));
+    }
     @PostMapping
     public ResponseEntity<Jogador> salvar(@Valid @RequestBody Jogador jogador) {
         return ResponseEntity.ok(jogadorService.salvar(jogador));

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "funcionarios")
+@Table(name = "funcionarios_clube")
 @DiscriminatorValue("FUNCIONARIO")
 public class FuncionarioClube extends FuncionarioBase {
 

@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.math.RoundingMode;
 
 @Service
 public class ComissaoTecnicaService {
@@ -70,7 +70,7 @@ public class ComissaoTecnicaService {
 
         BigDecimal novoSalario = membro.getSalario()
                 .subtract(membro.getSalario()
-                        .multiply(request.percentual().divide(BigDecimal.valueOf(100))));
+                        .multiply(request.percentual().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP)));
 
         if (novoSalario.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("Redução inválida: salário não pode ser zero ou negativo");
